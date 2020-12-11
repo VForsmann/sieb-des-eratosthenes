@@ -14,7 +14,7 @@ export default class SiebDesEratosthenes extends LitElement {
         return html`
             <ion-item>
                 <ion-label position="fixed">N</ion-label>
-                <ion-input min="10" @input="${this.Ninput}" value=${this.N}></ion-input>
+                <ion-input min="10" type="number" @input="${this.Ninput}" value=${this.N}></ion-input>
             </ion-item>
             <ion-button expand="block" @click="${this.sieben}">Sieben!</ion-button>
             <ion-button expand="block" @click="${this.reset}">Reset!</ion-button>

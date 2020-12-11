@@ -191,7 +191,7 @@ const nt=window.ShadowRoot&&(void 0===window.ShadyCSS||window.ShadyCSS.nativeSha
         `}};ct=lt([Q("pwa-root")],ct);var dt=function(t,e,n,o){var i,r=arguments.length,a=r<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,n):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,n,o);else for(var s=t.length-1;s>=0;s--)(i=t[s])&&(a=(r<3?i(a):r>3?i(e,n,a):i(e,n))||a);return r>3&&a&&Object.defineProperty(e,n,a),a},At=function(t,e){if("object"==typeof Reflect&&"function"==typeof Reflect.metadata)return Reflect.metadata(t,e)};let ut=class extends at{constructor(){super(...arguments),this.N=100,this.nonprimes=[]}createRenderRoot(){return this}render(){return D`
             <ion-item>
                 <ion-label position="fixed">N</ion-label>
-                <ion-input min="10" @input="${this.Ninput}" value=${this.N}></ion-input>
+                <ion-input min="10" type="number" @input="${this.Ninput}" value=${this.N}></ion-input>
             </ion-item>
             <ion-button expand="block" @click="${this.sieben}">Sieben!</ion-button>
             <ion-button expand="block" @click="${this.reset}">Reset!</ion-button>
