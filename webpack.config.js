@@ -33,8 +33,8 @@ module.exports = {
             favicon: "./src/assets/favicon.ico"
         }),
         new WebpackPwaManifest({
-            name: 'DevCafe-PWA',
-            short_name: 'OCPWA',
+            name: 'Sieb-des-Eratosthenes',
+            short_name: 'PWA',
             description: 'A example Progressive Web App!',
             background_color: '#ffffff',
             icons: [

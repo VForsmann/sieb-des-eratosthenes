@@ -37,8 +37,8 @@
       "purpose": "any maskable"
     }
   ],
-  "name": "DevCafe-PWA",
-  "short_name": "OCPWA",
+  "name": "Sieb-des-Eratosthenes",
+  "short_name": "PWA",
   "orientation": "portrait",
   "display": "standalone",
   "start_url": ".",
