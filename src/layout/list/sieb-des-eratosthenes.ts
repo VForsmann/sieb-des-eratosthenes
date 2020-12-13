@@ -16,7 +16,7 @@ export default class SiebDesEratosthenes extends LitElement {
                 <ion-label position="fixed">N</ion-label>
                 <ion-input min="10" type="number" @input="${this.Ninput}" value=${this.N}></ion-input>
             </ion-item>
-            <ion-button expand="block" @click="${this.sieben}">Sieben!</ion-button>
+            <ion-button expand="block" @click="${this.siebenNew}">Sieben!</ion-button>
             <ion-button expand="block" @click="${this.reset}">Reset!</ion-button>
             ${this.renderSieb()}
         `
@@ -82,18 +82,91 @@ export default class SiebDesEratosthenes extends LitElement {
         }
     }
 
-    sieben() {
-        const maxFactor = Math.floor(Math.sqrt(this.N));
-        for(let dividend = 2; dividend < maxFactor; dividend++) {
-            for(let number = dividend + 1; number <= this.N; number++) {
-                if(number % dividend === 0) {
-                    this.nonprimes.push(number)
+    // m als Obergrenze der Liste, die das Sieb des Eratosthenes berücksichtigt
+    // function SiebDesEratosthenes(m) {
+    //     var liste = array[2..m] 
+    //     var primzahlen = [];
+    //       // Untere Gauss-Klammer (siehe Optimierungen)
+    //     var lowerGauss = Math.floor(Math.sqrt(m))
+    
+    
+    //     for(var i = 2; i < lowerGauss; i++) {
+    //        // Prüfen ob i bereits entfernt wurde		
+    //       if(liste.contains(i)) {
+    //         //Markierte Zahl ist eine Primzahl
+    //         primzahlen.push(i);
+    //         // Alle Vielfachen von i werden aus der Liste entfernt
+    //         // Beginnend bei i*i (siehe Optimierungen)
+    //         for(var j = i*i; j < m; j+=i) {
+    //            liste.remove(j);
+    //         }
+    //       }
+    //     }
+    
+    //    return primzahlen;
+    //  }
+    
+    
+    //  function isPrimzahl(zahl) {
+    //    const primzahlen = SiebDesEratosthenes(zahl);
+    //    return primzahlen.contains(zahl);
+    //  }
+
+    siebenNew() {
+        const primarys = this.NOTOPTIMIZEDsiebdesEratosthenes(this.N);
+        const nonprimarys = Array.from(Array(this.N).keys()).map(e => e+1).filter(e => !primarys.includes(e));
+        this.nonprimes = nonprimarys;
+        this.requestUpdate();
+
+    }
+
+    siebdesEratosthenes(m: number) {
+        let liste = Array.from(Array(m-1).keys()).map(e => e+2);
+        const lowerGauss = Math.floor(Math.sqrt(m))
+        let zaehler = 0;
+        for(let i = 2; i <= lowerGauss; i++) {
+            if(liste.includes(i)) {
+                for(let j = i*i; j <= m; j=j+i) {
+                    zaehler = zaehler + 1;
+                    if(liste.indexOf(j) >= 0) {
+                        liste.splice(liste.indexOf(j), 1);
+                    }
                 }
             }
         }
-
-        this.requestUpdate();
+        alert("Sieb des Eratostehens hat " + zaehler + " Iterationen benötigt!");
+        return liste;
     }
+
+    NOTOPTIMIZEDsiebdesEratosthenes(m: number) {
+        let liste = Array.from(Array(m-1).keys()).map(e => e+2);
+        let zaehler = 0;
+        for(let i = 2; i <= m; i++) {
+            if(liste.includes(i)) {
+                for(let j = i+i; j <= m; j=j+i) {
+                    zaehler = zaehler + 1;
+                    if(liste.indexOf(j) >= 0) {
+                        liste.splice(liste.indexOf(j), 1);
+                    }
+                }
+            }
+        }
+        alert("Sieb des Eratostehens hat " + zaehler + " Iterationen benötigt!");
+        return liste;
+    }
+
+    // siebenOld() {
+    //     const maxFactor = Math.floor(Math.sqrt(this.N));
+    //     for(let dividend = 2; dividend < maxFactor; dividend++) {
+    //         for(let number = dividend + 1; number <= this.N; number++) {
+    //             if(number % dividend === 0) {
+    //                 this.nonprimes.push(number)
+    //             }
+    //         }
+    //     }
+
+    //     this.requestUpdate();
+    // }
 
     reset() {
         this.nonprimes = [];
