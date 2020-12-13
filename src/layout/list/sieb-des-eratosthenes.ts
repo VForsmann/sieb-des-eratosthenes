@@ -113,7 +113,7 @@ export default class SiebDesEratosthenes extends LitElement {
     //  }
 
     siebenNew() {
-        const primarys = this.NOTOPTIMIZEDsiebdesEratosthenes(this.N);
+        const primarys = this.siebdesEratosthenes(this.N);
         const nonprimarys = Array.from(Array(this.N).keys()).map(e => e+1).filter(e => !primarys.includes(e));
         this.nonprimes = nonprimarys;
         this.requestUpdate();
@@ -127,8 +127,8 @@ export default class SiebDesEratosthenes extends LitElement {
         for(let i = 2; i <= lowerGauss; i++) {
             if(liste.includes(i)) {
                 for(let j = i*i; j <= m; j=j+i) {
-                    zaehler = zaehler + 1;
                     if(liste.indexOf(j) >= 0) {
+                        zaehler = zaehler + 1;
                         liste.splice(liste.indexOf(j), 1);
                     }
                 }
