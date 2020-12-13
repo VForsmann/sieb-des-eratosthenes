@@ -1,10 +1,22 @@
-import { css, customElement, html, internalProperty, LitElement } from 'lit-element';
+import { css, customElement, html, internalProperty, LitElement } from "lit-element";
 
 @customElement("sieb-des-eratosthenes")
 export default class SiebDesEratosthenes extends LitElement {
-
-    @internalProperty() N: number = 100;
+    @internalProperty() N: number = 50;
     @internalProperty() nonprimes: number[] = [];
+    @internalProperty() algorithms = [
+        {
+            value: "01",
+            description: "Nicht optimiert. Laufzeit: (n^2)/2",
+            onSelect: () => this.divisionSieb(this.N),
+        },
+        {
+            value: "02",
+            description: "Optimiert. Laufzeit: n",
+            onSelect: () => this.divisionSiebOptimiert(this.N),
+        }
+    ];
+    @internalProperty() algorithm = this.NOTOPTIMIZEDsiebdesEratosthenes
 
     createRenderRoot() {
         return this;
@@ -16,22 +28,32 @@ export default class SiebDesEratosthenes extends LitElement {
                 <ion-label position="fixed">N</ion-label>
                 <ion-input min="10" type="number" @input="${this.Ninput}" value=${this.N}></ion-input>
             </ion-item>
+            <ion-select @ionChange="${this.selectAlgorithm}" value="01">
+                ${this.algorithms.map((algorithm) => {
+                    return html`<ion-select-option value="${algorithm.value}">${algorithm.description}</ion-select-option>`;
+                })}
+            </ion-select>
             <ion-button expand="block" @click="${this.siebenNew}">Sieben!</ion-button>
             <ion-button expand="block" @click="${this.reset}">Reset!</ion-button>
             ${this.renderSieb()}
-        `
+        `;
+    }
+
+    selectAlgorithm(e: CustomEvent) {
+        console.log(e);
+        const value = e.detail.value;
+        this.algorithm = this.algorithms.find(elem => elem.value === value)!.onSelect;
     }
 
     Ninput(e: InputEvent) {
-        const value = parseInt((e.target as HTMLInputElement).value)
-        if(value > 0) {
+        const value = parseInt((e.target as HTMLInputElement).value);
+        if (value > 0) {
             this.N = parseInt((e.target as HTMLInputElement).value);
         }
-
     }
 
     renderSieb() {
-        if(this.N > 0) {
+        if (this.N > 0) {
             const numberArray = Array.from(Array(this.N));
             return html`
                 <style>
@@ -59,7 +81,7 @@ export default class SiebDesEratosthenes extends LitElement {
                     span.nonprime {
                         background-color: rgb(255, 102, 102);
                     }
-                    
+
                     @media only screen and (max-width: 600px) {
                         span.element {
                             height: 50px;
@@ -71,12 +93,14 @@ export default class SiebDesEratosthenes extends LitElement {
                     <div class="row">
                         ${numberArray.map((elem: any, index: number) => {
                             return html`
-                                <span id="element_${index+1}" class="element ${this.nonprimes.includes(index+1) ? "nonprime" : "prime"}">${index+1}</span>
-                            `
+                                <span id="element_${index + 1}" class="element ${this.nonprimes.includes(index + 1) ? "nonprime" : "prime"}"
+                                    >${index + 1}</span
+                                >
+                            `;
                         })}
                     </div>
                 </div>
-            `
+            `;
         } else {
             return null;
         }
@@ -84,14 +108,13 @@ export default class SiebDesEratosthenes extends LitElement {
 
     // m als Obergrenze der Liste, die das Sieb des Eratosthenes berücksichtigt
     // function SiebDesEratosthenes(m) {
-    //     var liste = array[2..m] 
+    //     var liste = array[2..m]
     //     var primzahlen = [];
     //       // Untere Gauss-Klammer (siehe Optimierungen)
     //     var lowerGauss = Math.floor(Math.sqrt(m))
-    
-    
+
     //     for(var i = 2; i < lowerGauss; i++) {
-    //        // Prüfen ob i bereits entfernt wurde		
+    //        // Prüfen ob i bereits entfernt wurde
     //       if(liste.contains(i)) {
     //         //Markierte Zahl ist eine Primzahl
     //         primzahlen.push(i);
@@ -102,35 +125,35 @@ export default class SiebDesEratosthenes extends LitElement {
     //         }
     //       }
     //     }
-    
+
     //    return primzahlen;
     //  }
-    
-    
+
     //  function isPrimzahl(zahl) {
     //    const primzahlen = SiebDesEratosthenes(zahl);
     //    return primzahlen.contains(zahl);
     //  }
 
     siebenNew() {
-        const primarys = this.siebdesEratosthenes(this.N);
-        const nonprimarys = Array.from(Array(this.N).keys()).map(e => e+1).filter(e => !primarys.includes(e));
+        const primarys = this.algorithm(this.N);
+        const nonprimarys = Array.from(Array(this.N).keys())
+            .map((e) => e + 1)
+            .filter((e) => !primarys.includes(e));
         this.nonprimes = nonprimarys;
         this.requestUpdate();
-
     }
 
     siebdesEratosthenes(m: number) {
-        let liste = Array.from(Array(m-1).keys()).map(e => e+2);
-        const lowerGauss = Math.floor(Math.sqrt(m))
+        let liste = Array.from(Array(m - 1).keys()).map((e) => e + 2);
+        const lowerGauss = Math.floor(Math.sqrt(m));
         let zaehler = 0;
-        for(let i = 2; i <= lowerGauss; i++) {
-            if(liste.includes(i)) {
-                for(let j = i*i; j <= m; j=j+i) {
-                    if(liste.indexOf(j) >= 0) {
-                        zaehler = zaehler + 1;
+        for (let i = 2; i <= lowerGauss; i++) {
+            if (liste.includes(i)) {
+                for (let j = i * i; j <= m; j = j + i) {
+                    if (liste.indexOf(j) >= 0) {
                         liste.splice(liste.indexOf(j), 1);
                     }
+                    zaehler = zaehler + 1;
                 }
             }
         }
@@ -139,15 +162,51 @@ export default class SiebDesEratosthenes extends LitElement {
     }
 
     NOTOPTIMIZEDsiebdesEratosthenes(m: number) {
-        let liste = Array.from(Array(m-1).keys()).map(e => e+2);
+        let liste = Array.from(Array(m - 1).keys())
+            .map((e) => e + 2)
+            .map((e) => {
+                return { number: e, prime: true, marked: 0 };
+            });
+        let zaehler = 0;
+        for (let i = 2; i <= m; i++) {
+            for (let j = i + 1; j <= m; j++) {
+                const eintrag = liste.find((e) => e.number === j);
+                if (eintrag!.number % i === 0) {
+                    eintrag!.prime = false;
+                    eintrag!.marked++;
+                }
+                zaehler++;
+            }
+        }
+        alert("Sieb des Eratostehens hat " + zaehler + " Iterationen benötigt!");
+        const result = liste.filter((elem) => elem.prime).map((elem) => elem.number);
+        return result;
+    }
+
+    divisionSieb(m: number) {
+        let liste = Array.from(Array(m - 1).keys()).map((e) => e + 2);
         let zaehler = 0;
         for(let i = 2; i <= m; i++) {
-            if(liste.includes(i)) {
-                for(let j = i+i; j <= m; j=j+i) {
-                    zaehler = zaehler + 1;
-                    if(liste.indexOf(j) >= 0) {
-                        liste.splice(liste.indexOf(j), 1);
-                    }
+            for(let j = i+1; j <= m; j++) {
+                if(j % i === 0) {
+                    this.removeArrayElement(liste, j);
+                }
+                zaehler++;
+            }
+        }
+        alert("Sieb des Eratostehens hat " + zaehler + " Iterationen benötigt!");
+        return liste;
+    }
+
+    divisionSiebOptimiert(m: number) {
+        let liste = Array.from(Array(m - 1).keys()).map((e) => e + 2);
+        const lowerGauss = Math.floor(Math.sqrt(m));
+        let zaehler = 0;
+        for(let i = 2; i <= lowerGauss; i++) {
+            if (liste.includes(i)) {
+                for(let j = i * i; j <= m; j+=i) {
+                    this.removeArrayElement(liste, j);
+                    zaehler++;
                 }
             }
         }
@@ -155,18 +214,13 @@ export default class SiebDesEratosthenes extends LitElement {
         return liste;
     }
 
-    // siebenOld() {
-    //     const maxFactor = Math.floor(Math.sqrt(this.N));
-    //     for(let dividend = 2; dividend < maxFactor; dividend++) {
-    //         for(let number = dividend + 1; number <= this.N; number++) {
-    //             if(number % dividend === 0) {
-    //                 this.nonprimes.push(number)
-    //             }
-    //         }
-    //     }
+    removeArrayElement(array: any[], element: any) {
+        const index = array.indexOf(element);
+        if(index >= 0) {
+            array.splice(index, 1);
+        }
 
-    //     this.requestUpdate();
-    // }
+    }
 
     reset() {
         this.nonprimes = [];
