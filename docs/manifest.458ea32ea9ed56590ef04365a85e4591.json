@@ -1,0 +1,48 @@
+{
+  "icons": [
+    {
+      "src": "icon_512x512.eed24d55c085905a87d9de855856fe64.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon_384x384.5a6709cf7db254963066e0276761ae62.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon_256x256.c8a7faa2aba2efd1eff8a8f5633e77b2.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon_192x192.01991ab935090680e21018ad29f24419.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon_128x128.ffff50d28590e59a928286d8ff9f16e4.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon_96x96.4afcd39a1b749203f414c4fe0eec525b.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "name": "Sieb-des-Eratosthenes",
+  "short_name": "PWA",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "description": "A example Progressive Web App!",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+}
